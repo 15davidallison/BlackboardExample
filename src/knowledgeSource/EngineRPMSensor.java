@@ -15,7 +15,7 @@ public class EngineRPMSensor extends KnowledgeSource implements EngineSource {
 	}
 
 	public void updateVal() {
-		currentVal = ((double)throttle.currentVal()/(double)throttle.maxValue) * maxRPMs;
+		currentVal = (double)(int)(((double)throttle.currentVal()/(double)throttle.maxValue) * maxRPMs);
 		super.updateBb();
 	}
 	
