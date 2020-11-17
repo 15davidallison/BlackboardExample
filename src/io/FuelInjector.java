@@ -8,11 +8,18 @@ package io;
 public class FuelInjector extends OutputComponent {
 	public final int maxValue = 500;
 	
+	/**
+	 * @param val: initialize the flow of the fuel injector
+	 */
 	public FuelInjector(int val) {
 		currentVal = val;
 	}
 	
-	@Override
+	/**
+	 * Increase the fuel flow through the fuel injector
+	 * @param a: Increase fuel flow by this amount
+	 *			 If near/at fuel-cut, open all the way
+	 */
 	public void more(int a) {
 		if (currentVal + a < maxValue) {
 			currentVal += a;
@@ -21,7 +28,11 @@ public class FuelInjector extends OutputComponent {
 		}
 	}
 
-	@Override
+	/**
+	 * Decrease the fuel flow through the fuel injector
+	 * @param a: Decrease fuel flow by this amount
+	 *			 If near/at shut-off, close to 1 ccpm (not 0 to avoid undefined AFR)
+	 */
 	public void less(int a) {
 		if (currentVal - a > 1) {
 			currentVal -= a;

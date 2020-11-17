@@ -8,12 +8,14 @@ import java.util.HashSet;
  * @author David Allison
  * Controller in the Blackboard pattern, simulates a car's ECU.
  * Knowledge Sources are left public to allow for simulated sensor updates.
+ * For simplicity, this engine has a single fuel injector.
  */
 public class Controller {
 	
 	private static Controller pointer;
-	
 	private Blackboard bb;
+	
+	// Universal target AFR: (Stoichiometric Ratio)
 	private final double targetAFR = 14.7;
 	
 	// Output Components:

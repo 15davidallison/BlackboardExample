@@ -8,11 +8,18 @@ package io;
 public class Throttle extends OutputComponent {
 	public final int maxValue = 7500;
 	
+	/**
+	 * @param val: initialize the flow of the throttle body
+	 */
 	public Throttle(int val) {
 		currentVal = val;
 	}
 
-	@Override
+	/**
+	 * Increase the air flow through the throttle body
+	 * @param a: Open the throttle body by this amount
+	 *			 If near/at wide-open-throttle, open all the way
+	 */
 	public void more(int a) {
 		if (currentVal + a <= maxValue) {
 			currentVal += a;
@@ -21,7 +28,11 @@ public class Throttle extends OutputComponent {
 		}
 	}
 
-	@Override
+	/**
+	 * Decrease the air flow through the throttle body
+	 * @param a: Close the throttle body by this amount
+	 *			 If near/at fully closed, close all the way
+	 */
 	public void less(int a) {
 		if (currentVal - a >= 0) {
 			currentVal -= a;
