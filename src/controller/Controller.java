@@ -11,6 +11,8 @@ import java.util.HashSet;
  */
 public class Controller {
 	
+	private static Controller pointer;
+	
 	private Blackboard bb;
 	private final double targetAFR = 14.7;
 	
@@ -31,9 +33,9 @@ public class Controller {
 	private double currentPedalPosition;
 	
 	/**
-	 * Constructor for Controller class, creates all necessary sensors, devices, and blackboard
+	 * Private constructor for singleton Controller class, creates all necessary sensors, devices, and blackboard
 	 */
-	public Controller() {
+	private Controller() {
 		bb = new Blackboard();
 		injector = new FuelInjector(50);
 		throttle = new Throttle(735);
@@ -41,6 +43,13 @@ public class Controller {
 		afr = new AirFuelRatioSensor(bb, throttle, injector);
 		ks = new KnockSensor(bb, afr);
 		pps = new PedalPositionSensor(bb);
+	}
+	
+	public static Controller getInstance() {
+		if (pointer == null) {
+			pointer = new Controller();
+		}
+		return pointer;
 	}
 	
 	/**
