@@ -9,25 +9,31 @@ public class Driver {
 		Blackboard bb = Blackboard.getInstance();
 		Controller cont = new Controller(bb);
 		
+		// test acceleration run
 		for (int i = 0; i < 10; i++) {
 			
+			// list of activities to be performed i times
 			cont.afr.updateVal();
-			
-			cont.selectKS();
-			cont.configureKS();
-			cont.executeKS();
-			
 			cont.pps.accelerate();
-			
-			cont.selectKS();
-			cont.configureKS();
-			cont.executeKS();
-			
 			cont.rpm.updateVal();
 			
-			cont.selectKS();
-			cont.configureKS();
-			cont.executeKS();
+			// prioritize and execute these activities based on the knowledge they yield
+			while (cont.selectKS() != null) {
+				cont.executeKS();
+			}
+		}
+		// test deceleration run
+		for (int i = 0; i < 10; i++) {
+		
+			// list of activities to be performed i times
+			cont.afr.updateVal();
+			cont.pps.decelerate();			
+			cont.rpm.updateVal();
+			
+			// prioritize and execute these activities based on the knowledge they yield
+			while (cont.selectKS() != null) {
+				cont.executeKS();
+			}	
 		}
 		
 
