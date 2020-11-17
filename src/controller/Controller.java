@@ -32,7 +32,7 @@ public class Controller {
 		ks = new KnockSensor(bb, afr);
 		pps = new PedalPositionSensor(bb);
 	}
-	public void selectKS() {
+	public BbNode selectKS() {
 		HashSet<BbNode> nodes = bb.access();
 		BbNode highestPriorityNode = null;
 		for (BbNode node : nodes) {
@@ -42,46 +42,15 @@ public class Controller {
 		}
 		bb.remove(highestPriorityNode);
 		nextNode = highestPriorityNode;
-	}
-	
-	public void configureKS() {
-		if (nextNode != null) {
-			switch (nextNode.type()) {
-			case "AFR":
-				currentAFR = nextNode.value();
-				System.out.println("New AFR reported: " + currentAFR);
-				break;
-			case "KS":
-				if (nextNode.value() == 1.0) {
-					knockDetected = true;
-					System.out.println("Knock event detected!");
-					break;
-				}
-				knockDetected = false;
-				break;
-			case "RPM":
-				currentRPM = nextNode.value();
-				break;
-			case "GAS":
-				if (currentPedalPosition < nextNode.value()) {
-					posDelta = 1;
-				} else if (currentPedalPosition> nextNode.value()) {
-					posDelta = -1;
-				} else {
-					posDelta = 0;
-				}
-				currentPedalPosition = nextNode.value();
-				break;
-			}
-		} else {
-			System.out.println("Idling, no new engine data to configure...");
-		}
+		return nextNode;
 	}
 	
 	public void executeKS() {
 		if (nextNode != null) {
 			switch (nextNode.type()) {
 			case "AFR":
+				currentAFR = nextNode.value();
+				System.out.println("New AFR reported: " + currentAFR);
 				if (currentAFR > 14.8) { // too much air, increase fuel or decrease throttle
 					if (injector.currentVal() == injector.maxValue) {
 						System.out.println("Decreasing throttles to fix high AFR");
@@ -103,25 +72,29 @@ public class Controller {
 				}
 				break;
 			case "KS":
-				if (knockDetected) { // decrease throttle
+				if (nextNode.value() == 1.0) {
+					knockDetected = true;
+					System.out.println("Knock event detected!");
 					throttle.less(throttle.maxValue/10);
+					break;
 				}
+				knockDetected = false;
 				break;
 			case "RPM":
+				currentRPM = nextNode.value();
 				System.out.println("RPM: " + currentRPM);
 				break;
 			case "GAS":
-				System.out.println("Pedal position: " + currentPedalPosition);
-				switch(posDelta) {
-				case -1:
-					throttle.less(throttle.maxValue/10);
-					injector.less(injector.maxValue/10);
-					break;
-				case 1:
+				if (currentPedalPosition < nextNode.value()) {
 					throttle.more(throttle.maxValue/10);
 					injector.more(injector.maxValue/10);
-					break;
+				} else if (currentPedalPosition> nextNode.value()) {
+					throttle.less(throttle.maxValue/10);
+					injector.less(injector.maxValue/10);
 				}
+				currentPedalPosition = nextNode.value();
+				System.out.println("Pedal position: " + currentPedalPosition);
+				break;
 			}
 		} else {
 			System.out.println("Idling, no new engine data to execute on...");
