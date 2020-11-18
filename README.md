@@ -1,6 +1,6 @@
 # BlackboardExample
 
-Java project to demosntrate the Blackboard pattern.
+Java project to demonstrate the Blackboard pattern.
 
 Assignment for CS3560.
 
