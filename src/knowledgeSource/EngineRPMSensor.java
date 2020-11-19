@@ -17,10 +17,10 @@ public class EngineRPMSensor extends KnowledgeSource implements EngineSource {
 	 * @param throttle: Used to calculate an approximate engine RPM
 	 */
 	public EngineRPMSensor(Blackboard bb, Throttle throttle) {
-		super(bb);
-		super.priority = 5;
-		super.sourceType = "RPM";
-		this.throttle = throttle;
+            super(bb);
+            super.priority = 5;
+            super.sourceType = "RPM";
+            this.throttle = throttle;
 	}
 
 	/**
@@ -28,8 +28,8 @@ public class EngineRPMSensor extends KnowledgeSource implements EngineSource {
 	 * Converted from double -> int -> double to truncate decimals
 	 */
 	public void updateVal() {
-		currentVal = (double)(int)(((double)throttle.currentVal()/(double)throttle.maxValue) * maxRPMs);
-		super.updateBb();
+            currentVal = (double)(int)(((double)throttle.currentVal()/(double)throttle.maxValue) * maxRPMs);
+            super.updateBb();
 	}
 	
 }

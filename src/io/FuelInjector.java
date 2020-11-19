@@ -12,7 +12,7 @@ public class FuelInjector extends OutputComponent {
 	 * @param val: initialize the flow of the fuel injector
 	 */
 	public FuelInjector(int val) {
-		currentVal = val;
+            currentVal = val;
 	}
 	
 	/**
@@ -21,11 +21,11 @@ public class FuelInjector extends OutputComponent {
 	 *			 If near/at fuel-cut, open all the way
 	 */
 	public void more(int a) {
-		if (currentVal + a < maxValue) {
-			currentVal += a;
-		} else {
-			currentVal = maxValue;
-		}
+            if (currentVal + a < maxValue) {
+                    currentVal += a;
+            } else {
+                    currentVal = maxValue;
+            }
 	}
 
 	/**
@@ -34,11 +34,11 @@ public class FuelInjector extends OutputComponent {
 	 *			 If near/at shut-off, close to 1 ccpm (not 0 to avoid undefined AFR)
 	 */
 	public void less(int a) {
-		if (currentVal - a > 1) {
-			currentVal -= a;
-		} else {
-			currentVal = 1;
-		}
+            if (currentVal - a > 1) {
+                    currentVal -= a;
+            } else {
+                    currentVal = 1;
+            }
 	}
 
 

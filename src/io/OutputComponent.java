@@ -19,6 +19,6 @@ public abstract class OutputComponent {
 	 * @return the current value of the output
 	 */
 	public int currentVal() {
-		return currentVal;
+            return currentVal;
 	}
 }
