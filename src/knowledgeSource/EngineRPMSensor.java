@@ -9,7 +9,7 @@ import io.*;
  */
 public class EngineRPMSensor extends KnowledgeSource implements EngineSource {
 	private Throttle throttle;
-	private final double maxRPMs = 7000;
+	public final double maxRPMs = 7000;
 
 	/**
 	 * Constructor
