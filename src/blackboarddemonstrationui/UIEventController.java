@@ -34,7 +34,7 @@ public class UIEventController implements Initializable {
     @FXML private Slider slider;
     @FXML private AnchorPane RPMContainer; // where labelRPM is contained
     @FXML private AnchorPane AFRContainer; // where labelAFR is contained
-    
+
     private static Label labelAFR;
     private static Label labelRPM;
     
@@ -78,7 +78,7 @@ public class UIEventController implements Initializable {
         rpm = new EngineRPMSensor(bb, throttle);
         afr = new AirFuelRatioSensor(bb, throttle, injector);
         pps = new PedalPositionSensor(bb);
-        ks = new KnockSensor(bb, afr);
+        ks = new KnockSensor(bb, afr, rpm);
         
         new BackgroundProcess().start(); // Start thread: Executes Static Public methods
         
@@ -175,6 +175,7 @@ public class UIEventController implements Initializable {
     public static void updateVal(){
         afr.updateVal();
         rpm.updateVal();
+        ks.updateVal();
     }
     
     /**
@@ -186,7 +187,7 @@ public class UIEventController implements Initializable {
             switch (nextNode.type()) {
                 case "AFR": // Air Fuel Ratio Sensor has reported a new value
                     currentAFR = nextNode.value();
-                    updateAFRLabel(String.valueOf(currentAFR));
+                    updateAFRLabel(String.format("%.4g%n", currentAFR)); //String.valueOf(currentAFR));
                     // DO NOT CHANGE THIS SECTION
                     if (currentAFR > 14.8) { // too much air, increase fuel or decrease throttle
                         if (injector.currentVal() == injector.maxValue) {
@@ -199,7 +200,7 @@ public class UIEventController implements Initializable {
                             injector.more((int)(((1/targetAFR) - (1/currentAFR)) * currentAFR * injector.currentVal()));
                         }
                     } else if (currentAFR < 14.6) { // too much fuel, decrease fuel or increase air
-                        if (injector.currentVal() >= injector.maxValue *.2) { // if injectors are running at >20% power
+                        if (injector.currentVal() >= injector.maxValue *.5) { // if injectors are running at >20% power
                             System.out.println("Decreasing injectors to fix rich AFR");
                             addToInfoLog(("Decreasing injectors to fix rich AFR"));
                             injector.less((int)(-1 * ((1/targetAFR) - (1/currentAFR)) * currentAFR * injector.currentVal()));
@@ -223,7 +224,7 @@ public class UIEventController implements Initializable {
 
                 case "RPM": // Engine RPM Sensor has reported a new value
                     currentRPM = nextNode.value();
-                    updateRPMLabel(String.valueOf(currentRPM));
+                    updateRPMLabel(String.valueOf((int)currentRPM));
                     break;
 
                 case "GAS": // Pedal Position has been updated

@@ -29,38 +29,6 @@ public class BlackBoardDemonstrationUI extends Application {
      */
     public static void main(String[] args) {
         launch(args);
-        
-
-//        // test acceleration run
-//        for (int i = 0; i < 10; i++) {
-//
-//                // list of activities to be performed i times
-//                cont.afr.updateVal();
-//                cont.pps.accelerate();
-//                cont.rpm.updateVal();
-//                // halfway through the acceleration run, simulate a knock event
-//                if (i == 5) {
-//                        cont.ks.causeDetonationEvent();
-//                }
-//
-//                // prioritize and execute these activities based on the knowledge they yield
-//                while (cont.selectKS() != null) {
-//                        cont.executeKS();
-//                }
-//        }
-//        // test deceleration run
-//        for (int i = 0; i < 10; i++) {
-//
-//                // list of activities to be performed i times
-//                cont.afr.updateVal();
-//                cont.pps.decelerate();			
-//                cont.rpm.updateVal();
-//
-//                // prioritize and execute these activities based on the knowledge they yield
-//                while (cont.selectKS() != null) {
-//                        cont.executeKS();
-//                }	
-//        }
     }
     
 }
