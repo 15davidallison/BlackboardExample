@@ -36,7 +36,6 @@ public class KnockSensor extends KnowledgeSource implements EngineSource {
                     Random rand = new Random();
                     // as RPMs rise, give between a 1/500 chance to a 1/5 chance that knock events will occur
                     int chance = (int)(500 - (495 / rpm.maxRPMs) * rpm.currentVal);
-                    System.out.println(chance);
                     currentVal = rand.nextInt(chance);
             }
             if (currentVal != 1.0) {
