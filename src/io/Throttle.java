@@ -31,13 +31,14 @@ public class Throttle extends OutputComponent {
     /**
      * Decrease the air flow through the throttle body
      * @param a: Close the throttle body by this amount
-     *			 If near/at fully closed, close all the way
+     *			 If near/at fully closed, close to 1 ccpm
+     *			 to avoid a 0 afr feedback loop
      */
     public void less(int a) {
-        if (currentVal - a >= 0) {
+        if (currentVal - a >= 1) {
                 currentVal -= a;
         } else {
-                currentVal = 0;
+                currentVal = 1;
         }
     }
 
